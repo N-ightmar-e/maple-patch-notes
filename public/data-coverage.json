@@ -1,0 +1,36 @@
+{
+  "sections": 64,
+  "sectionKinds": {
+    "common": 10,
+    "job": 48,
+    "content": 6
+  },
+  "skills": 1153,
+  "skillLines": 2707,
+  "numericComparisons": 727,
+  "paragraphs": 104,
+  "directions": {
+    "buff": 403,
+    "nerf": 304,
+    "review": 20
+  },
+  "tags": {
+    "utility": 158,
+    "buff": 157,
+    "mixed": 645,
+    "rework": 623,
+    "fix": 63,
+    "removed": 305,
+    "new": 6,
+    "nerf": 126,
+    "review": 19
+  },
+  "tables": 5,
+  "tableRows": 63,
+  "sourceBlocksVerified": 4009,
+  "postAuditDirections": {
+    "buff": 403,
+    "nerf": 297,
+    "review": 27
+  }
+}
