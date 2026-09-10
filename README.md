@@ -18,3 +18,14 @@
 타입 검사: `npx tsc --noEmit`
 
 컴파일과 비브라우저 HTTP 응답, 데이터 및 로컬 이미지 참조를 확인했습니다. 실제 브라우저 상호작용 테스트는 수행하지 않았습니다.
+
+## GitHub Pages
+
+공개 사이트: https://n-ightmar-e.github.io/maple-patch-notes/
+저장소: https://github.com/N-ightmar-e/maple-patch-notes
+
+`npm run build:pages`는 같은 React 화면과 데이터를 Vite로 빌드해 `dist/github-pages/`에 세 개의 정적 HTML 진입점을 만듭니다. GitHub Pages의 `/maple-patch-notes/` 경로를 이미지와 링크에 적용합니다. 로그인 서버나 비밀 키가 필요하지 않습니다.
+
+`main`에는 소스코드, `gh-pages`에는 생성된 파일을 보관합니다. Pages 게시 원본은 `gh-pages` 브랜치의 `/`이며 `.nojekyll`로 정적 파일을 그대로 제공합니다. 사이트를 갱신할 때는 소스 변경을 `main`에 커밋하고 `npm run build:pages` 후 결과를 `gh-pages`에 배포하면 됩니다. 기존 `npm run build`는 Sites 서버 빌드를 유지합니다.
+
+GitHub Pages에서는 각 메뉴가 해당 HTML 페이지로 이동합니다. JavaScript를 켜야 직업 색인, 검색 및 비교 필터를 사용할 수 있습니다.
