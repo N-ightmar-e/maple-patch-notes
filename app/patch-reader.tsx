@@ -1,5 +1,10 @@
 'use client';
 /* eslint-disable next/no-img-element -- These are local, fixed-size game icons served by static GitHub Pages. */
+import {
+  AnalysisComment,
+  JobAnalysisHighlight,
+  AnalysisSources,
+} from './analysis-comment';
 import { useLocationSearch } from '@/lib/use-location-search';
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -351,6 +356,7 @@ function SkillCard({ skill, job }: { skill: Skill; job: string }) {
           <li key={i}>{line.replace(/^[·•]\s*/, '')}</li>
         ))}
       </ul>
+      <AnalysisComment id={skill.id} />
       <div className="skill-card-footer">
         <SkillHistoryLink id={skill.id} />
         <a
@@ -644,6 +650,11 @@ export default function PatchReader({
                   </button>
                 )}
               </div>
+              {mode === 'notes' &&
+                selected !== 'all' &&
+                !query &&
+                filter === 'all' &&
+                tier === 'all' && <JobAnalysisHighlight sectionId={selected} />}
               {mode === 'compare' ? (
                 <>
                   <div className="notice">
@@ -853,6 +864,7 @@ function Qualitative({ selected }: { selected: string }) {
 function Sources() {
   return (
     <div className="sources-content">
+      <AnalysisSources />
       <ArchiveSources />
       <section>
         <span className="section-kicker">PRIMARY SOURCE</span>

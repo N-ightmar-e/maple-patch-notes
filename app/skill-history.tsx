@@ -1,5 +1,6 @@
 'use client';
 /* eslint-disable next/no-img-element -- These are local, fixed-size game icons served by static GitHub Pages. */
+import { AnalysisComment } from './analysis-comment';
 import { useLocationSearch } from '@/lib/use-location-search';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -183,6 +184,7 @@ function HistoryDetail({ skill }: { skill: ArchiveSkill }) {
           못했습니다. 과거 변경이 없었다는 뜻은 아닙니다.
         </p>
       )}
+      {skill.patchId && <AnalysisComment id={skill.patchId} />}
       <ol className="history-timeline">
         {events.map((event, i) => {
           const source = sourceById.get(event.sourceId)!;
