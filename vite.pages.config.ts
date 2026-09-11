@@ -21,6 +21,7 @@ export default defineConfig({
       main: `${root}pages/index.html`,
       compare: `${root}pages/compare/index.html`,
       sources: `${root}pages/sources/index.html`,
+      history: `${root}pages/history/index.html`,
     } },
   },
 });
