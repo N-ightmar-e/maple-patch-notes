@@ -523,7 +523,9 @@ export function ComparisonContent() {
   const params = new URLSearchParams(useLocationSearch());
   const reading = useReadingState();
   const requested = params.has('skills')
-    ? [...new Set((params.get('skills') || '').split(','))].slice(0, 2)
+    ? [
+        ...new Set((params.get('skills') || '').split(',').filter(Boolean)),
+      ].slice(0, 2)
     : reading.comparison;
   const skills = requested
     .map((id) => byArchiveId.get(id))
@@ -531,13 +533,22 @@ export function ComparisonContent() {
   const requestedKey = params.has('skills')
     ? skills.map((skill) => skill.id).join(',')
     : null;
+  const savedKey = reading.comparison.join(',');
   useEffect(() => {
-    if (requestedKey !== null)
-      updateReadingState((state) => ({
-        ...state,
-        comparison: requestedKey ? requestedKey.split(',') : [],
-      }));
-  }, [requestedKey]);
+    if (requestedKey !== null) {
+      if (requestedKey !== savedKey)
+        updateReadingState((state) => ({
+          ...state,
+          comparison: requestedKey ? requestedKey.split(',') : [],
+        }));
+    } else if (savedKey) {
+      // Include restored selections in the address so copying it shares this comparison.
+      const url = new URL(window.location.href);
+      url.searchParams.set('skills', savedKey);
+      window.history.replaceState(null, '', url);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  }, [requestedKey, savedKey]);
   const choose = (id: string, slot: number) => {
     if (skills[1 - slot]?.id === id) {
       setNotice('이미 선택한 스킬입니다. 다른 스킬을 골라 주세요.');
