@@ -1,2 +1,4 @@
-import PatchReader from './patch-reader';
-export default function Home() { return <PatchReader mode="notes"/>; }
+import HomeEntry from './home-entry';
+export default function Home() {
+  return <HomeEntry />;
+}

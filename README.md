@@ -25,11 +25,27 @@
 공개 사이트: https://n-ightmar-e.github.io/maple-patch-notes/
 저장소: https://github.com/N-ightmar-e/maple-patch-notes
 
-`npm run build:pages`는 같은 React 화면과 데이터를 Vite로 빌드해 `dist/github-pages/`에 네 개의 정적 HTML 진입점을 만듭니다. GitHub Pages의 `/maple-patch-notes/` 경로를 이미지와 링크에 적용합니다. 로그인 서버나 비밀 키가 필요하지 않습니다.
+`npm run build:pages`는 같은 React 화면과 데이터를 Vite로 빌드해 `dist/github-pages/`에 아홉 개의 정적 HTML 진입점을 만듭니다. GitHub Pages의 `/maple-patch-notes/` 경로를 이미지와 링크에 적용합니다. 로그인 서버나 비밀 키가 필요하지 않습니다.
 
 `main`에는 소스코드, `gh-pages`에는 생성된 파일을 보관합니다. Pages 게시 원본은 `gh-pages` 브랜치의 `/`이며 `.nojekyll`로 정적 파일을 그대로 제공합니다. 사이트를 갱신할 때는 소스 변경을 `main`에 커밋하고 `npm run build:pages` 후 결과를 `gh-pages`에 배포하면 됩니다. 기존 `npm run build`는 Sites 서버 빌드를 유지합니다.
 
 GitHub Pages에서는 각 메뉴가 해당 HTML 페이지로 이동합니다. JavaScript를 켜야 직업 색인, 검색 및 비교 필터를 사용할 수 있습니다.
+
+## 패치 위키 (2026-09-11 확장)
+
+기본 주소는 위키 대문입니다. 48개 직업과 공통·직업군 10개를 부모 문서로 두고, 기존 1,176개 스킬·변경 기록을 개별 문서로 제공합니다. 이는 네 패치에서 조사한 항목의 위키이며, 메이플스토리 전체 스킬 목록이나 라이브 서버의 확정 수치 사전은 아닙니다. 출처가 없는 현재 능력치나 스킬 설명을 새로 채워 넣지 않았습니다.
+
+- `/wiki/`: 직업 색인과 통합 검색. 명칭, 직업, 차수, 패치 본문에서 검색하며 띄어쓰기와 한글 초성 검색을 지원합니다. `?q=히어로+6차`처럼 검색 결과를 공유할 수 있습니다.
+- `/wiki/job/?id=section-03`: 직업 문서. 차수별 목록, 검색, 주요 AI 해설, 수록 패치로 연결합니다.
+- `/wiki/skill/?id=archive-f2b5ef36bae1`: 개별 항목 문서. 전후 수치, 작성된 AI/자동 해설, 최신순 이력, 원본·VI 연결, 차수 분류 근거와 출처를 표시합니다.
+- `/wiki/patch/?id=p206`: 버전 문서. 해당 공지의 직업별 기록과 연결된 스킬 문서를 보여 주며 `&job=section-03`으로 좁힐 수 있습니다.
+- `/notes/`, `/compare/`, `/history/`, `/sources/`: 기존 기능을 유지합니다. 이미 공유한 `/?job=...#section-...`, `/?q=...`, `/?tier=...` 주소도 기존 패치노트로 열립니다.
+
+문서의 기존 archive ID를 그대로 사용합니다. 정적 HTML 템플릿은 문서 ID와 검색 조건을 쿼리에서 읽으므로 GitHub Pages에서도 문서 URL을 직접 열고 새로고침할 수 있습니다. 각 문서는 제목, 경로, 목차, 복사 가능한 주소, GitHub의 실제 수정 제안 링크를 갖습니다. 방문자가 사이트에서 공동 편집하는 기능은 없으며 수정 제안은 GitHub에서 사용자가 직접 제출합니다. API 키나 실시간 모델 호출을 추가하지 않았습니다.
+
+문서 구조는 `app/wiki-reader.tsx`, 표현은 `app/wiki.css`, 검색과 링크 규칙은 `lib/wiki*.{ts,mjs}`에 있습니다. 실제 근거 데이터는 기존 `app/data/patch.json`, `skill-archive.json`, `analysis.json`, `icons.json`을 재사용합니다. 새 패치를 추가할 때 기존 ID를 유지하고 이력의 출처 참조와 AI 코멘트의 근거 해시를 함께 검토해야 합니다. 현재 사이트는 자료를 자동 수집하지 않습니다.
+
+배포 빌드는 AI 원문 일치 검사, 아카이브 관계 검사, 위키 검색·주소 호환 검사를 먼저 실행합니다. `node scripts/check-wiki.mjs`는 고유 문서 주소, 부모 문서와 이미지 연결, 한글 검색, 기존 공유 주소, 9개 진입점 구성을 확인합니다. 이번 확장은 타입 검사·빌드·데이터 검사·실제 배포 HTTP 응답으로 검증하며, 브라우저 화면과 클릭 동작 검사는 수행하지 않았습니다.
 
 
 ## 차수별 스킬 이력 (2026-09-11 추가)

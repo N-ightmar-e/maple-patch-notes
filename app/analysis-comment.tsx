@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import data from './data/analysis.json';
 import patch from './data/patch.json';
+import { byPatchId } from '@/lib/skill-archive';
+import { skillHref } from '@/lib/wiki';
 import {
   numericNotes,
   productChange,
@@ -97,6 +99,10 @@ function OrdnanceModel() {
     </div>
   );
 }
+export const hasAnalysis = (id: string) => {
+  const skill = skills.get(id);
+  return !!comments[id] || (!!skill && numericNotes(skill).length > 0);
+};
 export function AnalysisComment({ id }: { id: string }) {
   const skill = skills.get(id);
   if (!skill) return null;
@@ -179,7 +185,13 @@ export function AnalysisComment({ id }: { id: string }) {
     </aside>
   );
 }
-export function JobAnalysisHighlight({ sectionId }: { sectionId: string }) {
+export function JobAnalysisHighlight({
+  sectionId,
+  wiki = false,
+}: {
+  sectionId: string;
+  wiki?: boolean;
+}) {
   const entry = Object.entries(comments).find(
     ([, c]) => c.sectionId === sectionId,
   );
@@ -192,7 +204,13 @@ export function JobAnalysisHighlight({ sectionId }: { sectionId: string }) {
         <span>AI가 짚은 주요 변화</span>
         <small>사전 작성</small>
       </div>
-      <Link href={`/?job=${sectionId}#${id}`}>
+      <Link
+        href={
+          wiki && byPatchId.has(id)
+            ? `${skillHref(byPatchId.get(id)!.id)}#commentary`
+            : `/?job=${sectionId}#${id}`
+        }
+      >
         <strong>{c.skill}</strong>
         <span>{c.title}</span>
         <ArrowRight size={16} />

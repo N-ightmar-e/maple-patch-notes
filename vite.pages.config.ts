@@ -12,16 +12,25 @@ export default defineConfig({
   resolve: { alias: { '@': root, 'next/link': `${root}pages/link.tsx` } },
   define: {
     'process.env.NEXT_PUBLIC_BASE_PATH': JSON.stringify('/maple-patch-notes'),
-    'process.env.NEXT_PUBLIC_SITE_ORIGIN': JSON.stringify('https://n-ightmar-e.github.io'),
+    'process.env.NEXT_PUBLIC_SITE_ORIGIN': JSON.stringify(
+      'https://n-ightmar-e.github.io',
+    ),
   },
   build: {
     outDir: `${root}dist/github-pages`,
     emptyOutDir: true,
-    rollupOptions: { input: {
-      main: `${root}pages/index.html`,
-      compare: `${root}pages/compare/index.html`,
-      sources: `${root}pages/sources/index.html`,
-      history: `${root}pages/history/index.html`,
-    } },
+    rollupOptions: {
+      input: {
+        main: `${root}pages/index.html`,
+        notes: `${root}pages/notes/index.html`,
+        wiki: `${root}pages/wiki/index.html`,
+        wikiJob: `${root}pages/wiki/job/index.html`,
+        wikiSkill: `${root}pages/wiki/skill/index.html`,
+        wikiPatch: `${root}pages/wiki/patch/index.html`,
+        compare: `${root}pages/compare/index.html`,
+        sources: `${root}pages/sources/index.html`,
+        history: `${root}pages/history/index.html`,
+      },
+    },
   },
 });

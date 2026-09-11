@@ -20,7 +20,9 @@ import {
   tierOf,
   tiers,
   tierDescription,
+  byPatchId,
 } from '@/lib/skill-archive';
+import { skillHref, jobHref } from '@/lib/wiki';
 import { sitePath } from '@/lib/site-path';
 import {
   ArrowDownRight,
@@ -359,6 +361,14 @@ function SkillCard({ skill, job }: { skill: Skill; job: string }) {
       <AnalysisComment id={skill.id} />
       <div className="skill-card-footer">
         <SkillHistoryLink id={skill.id} />
+        {byPatchId.has(skill.id) && (
+          <Link
+            className="skill-history-link"
+            href={skillHref(byPatchId.get(skill.id)!.id)}
+          >
+            위키 문서 <BookOpen size={14} />
+          </Link>
+        )}
         <a
           className="card-source"
           href={patch.sourceUrl}
@@ -547,7 +557,21 @@ export default function PatchReader({
             </p>
           </div>
           <nav className="view-nav" aria-label="패치노트 화면">
-            <Link className={mode === 'notes' ? 'active' : ''} href="/">
+            <Link
+              href={
+                selected !== 'all' &&
+                patch.sections.some(
+                  (section) =>
+                    section.id === selected && section.kind !== 'content',
+                )
+                  ? jobHref(selected)
+                  : '/wiki/'
+              }
+            >
+              <BookOpen size={16} />
+              위키
+            </Link>
+            <Link className={mode === 'notes' ? 'active' : ''} href="/notes/">
               <BookOpen size={17} />
               직업별 패치노트
             </Link>

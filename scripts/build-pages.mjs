@@ -1,10 +1,40 @@
 import { spawnSync } from 'node:child_process';
 import { accessSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-const analysisCheck = spawnSync(process.execPath, [resolve('scripts/check-analysis.mjs')], { stdio: 'inherit' });
+const analysisCheck = spawnSync(
+  process.execPath,
+  [resolve('scripts/check-analysis.mjs')],
+  { stdio: 'inherit' },
+);
 if (analysisCheck.status !== 0) process.exit(analysisCheck.status ?? 1);
-const result = spawnSync(process.execPath, [resolve('node_modules/vite/bin/vite.js'), 'build', '--config', 'vite.pages.config.ts'], { stdio: 'inherit' });
+for (const check of ['check-archive.mjs', 'check-wiki.mjs']) {
+  const checked = spawnSync(process.execPath, [resolve('scripts', check)], {
+    stdio: 'inherit',
+  });
+  if (checked.status !== 0) process.exit(checked.status ?? 1);
+}
+const result = spawnSync(
+  process.execPath,
+  [
+    resolve('node_modules/vite/bin/vite.js'),
+    'build',
+    '--config',
+    'vite.pages.config.ts',
+  ],
+  { stdio: 'inherit' },
+);
 if (result.status !== 0) process.exit(result.status ?? 1);
-for (const route of ['index.html', 'compare/index.html', 'sources/index.html', 'history/index.html']) accessSync(resolve('dist/github-pages', route));
+for (const route of [
+  'index.html',
+  'notes/index.html',
+  'wiki/index.html',
+  'wiki/job/index.html',
+  'wiki/skill/index.html',
+  'wiki/patch/index.html',
+  'compare/index.html',
+  'sources/index.html',
+  'history/index.html',
+])
+  accessSync(resolve('dist/github-pages', route));
 writeFileSync('dist/github-pages/.nojekyll', '');
 console.log('GitHub Pages output ready: dist/github-pages');
