@@ -30,14 +30,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableCell,
-} from '@/components/ui/table';
+
 import {
   AnalysisComment,
   JobAnalysisHighlight,
@@ -74,9 +67,38 @@ import { matches, searchEntries } from '@/lib/wiki-search.mjs';
 import { useLocationSearch } from '@/lib/use-location-search';
 import { sitePath } from '@/lib/site-path';
 import patch from './data/patch.json';
+import {
+  BookmarkButton,
+  CompareButton,
+  QuickFind,
+  ReadingTray,
+  ReadingLibrary,
+  ChangeList,
+  ComparisonContent,
+} from './reading-tools';
+import { rememberDocument } from '@/lib/use-reading-state';
+import {
+  safeReturnPath,
+  anchorForEvent,
+  eventAnchor,
+  changeSignals,
+  comparisonHref,
+} from '@/lib/reading-state.mjs';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 type TocItem = { id: string; label: string };
-export type WikiView = 'wiki' | 'wiki-job' | 'wiki-skill' | 'wiki-patch';
+export type WikiView =
+  | 'wiki'
+  | 'wiki-job'
+  | 'wiki-skill'
+  | 'wiki-patch'
+  | 'wiki-compare';
 const correctionUrl = (title: string) =>
   `https://github.com/N-ightmar-e/maple-patch-notes/issues/new?title=${encodeURIComponent(`[문서 수정] ${title}`)}&body=${encodeURIComponent('수정할 내용:\n\n확인 가능한 공식 출처 URL:\n\n')}`;
 
@@ -142,6 +164,13 @@ function SidebarIndex({ sectionId }: { sectionId?: string }) {
       </SidebarHeader>
       <SidebarContent className="wiki-side-content">
         <nav className="wiki-main-nav" aria-label="위키 메뉴">
+          <Link href="/wiki/?view=saved">
+            <BookOpen size={17} />내 스킬북
+          </Link>
+          <Link href="/wiki/compare/">
+            <Swords size={17} />
+            스킬 나란히 비교
+          </Link>
           <Link href="/wiki/">
             <BookOpen size={17} />
             위키 대문
@@ -214,22 +243,21 @@ function SidebarIndex({ sectionId }: { sectionId?: string }) {
 function SearchForm() {
   const search = useLocationSearch();
   const q = new URLSearchParams(search).get('q') || '';
+  const kind = new URLSearchParams(search).get('kind');
   return (
-    <form
-      key={q}
-      className="wiki-global-search"
-      action={sitePath('/wiki/')}
-      role="search"
-    >
-      <Search size={18} />
-      <Input
-        name="q"
-        aria-label="위키 전체 검색"
-        placeholder="직업·스킬·패치 내용 검색"
-        defaultValue={q}
-      />
-      <button type="submit">검색</button>
-    </form>
+    <search className="wiki-search-landmark">
+      <form key={q} className="wiki-global-search" action={sitePath('/wiki/')}>
+        {kind && <input type="hidden" name="kind" value={kind} />}
+        <Search size={18} />
+        <Input
+          name="q"
+          aria-label="위키 전체 검색"
+          placeholder="직업·스킬·패치 내용 검색"
+          defaultValue={q}
+        />
+        <button type="submit">검색</button>
+      </form>
+    </search>
   );
 }
 
@@ -255,6 +283,7 @@ function WikiLayout({
   children,
   illustration,
   kind = 'home',
+  documentId,
 }: {
   title: string;
   label: string;
@@ -263,13 +292,38 @@ function WikiLayout({
   toc: TocItem[];
   children: ReactNode;
   illustration?: ReactNode;
-  kind?: 'home' | 'job' | 'skill' | 'patch';
+  kind?: 'home' | 'job' | 'skill' | 'patch' | 'compare';
+  documentId?: string;
 }) {
   const [copyStatus, setCopyStatus] = useState('');
   const isSkillIndex =
     new URLSearchParams(useLocationSearch()).get('kind') === 'skills';
   useEffect(() => {
     document.title = `${title} | 메이플 패치 위키`;
+  }, [title]);
+  useEffect(() => {
+    if (documentId) rememberDocument(documentId);
+  }, [documentId]);
+  useEffect(() => {
+    let frame = 0;
+    const scrollToHash = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        try {
+          const id = decodeURIComponent(window.location.hash.slice(1));
+          if (id)
+            document.getElementById(id)?.scrollIntoView({ block: 'start' });
+        } catch {
+          /* Ignore malformed fragments in shared URLs. */
+        }
+      });
+    };
+    scrollToHash();
+    window.addEventListener('hashchange', scrollToHash);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', scrollToHash);
+    };
   }, [title]);
   const copy = async () => {
     try {
@@ -295,6 +349,7 @@ function WikiLayout({
             메이플 패치 위키
           </Link>
           <SearchForm />
+          <QuickFind hotkey />
           <Link className="wiki-top-source" href="/sources/">
             자료 기준
           </Link>
@@ -368,6 +423,9 @@ function WikiLayout({
             </header>
             <div className="wiki-document-tools">
               <span>자료 확인 {archive.updatedAt}</span>
+              {documentId && (
+                <BookmarkButton documentId={documentId} label={title} />
+              )}
               <button onClick={copy} type="button">
                 <Link2 size={14} />
                 문서 주소 복사
@@ -375,7 +433,7 @@ function WikiLayout({
               <a href={correctionUrl(title)} target="_blank" rel="noreferrer">
                 수정 제안 <ExternalLink size={12} />
               </a>
-              <span role="status">{copyStatus}</span>
+              <output>{copyStatus}</output>
             </div>
             <details className="wiki-mobile-toc">
               <summary>목차</summary>
@@ -435,6 +493,7 @@ function WikiLayout({
           </aside>
         </div>
       </div>
+      {kind !== 'compare' && <ReadingTray />}
     </SidebarProvider>
   );
 }
@@ -462,18 +521,62 @@ function SectionTitle({
   );
 }
 
+function SkillSnippet({
+  skill,
+  query,
+  from,
+}: {
+  skill: ArchiveSkill;
+  query: string;
+  from?: string;
+}) {
+  const events = eventsFor(skill);
+  const found = query.trim()
+    ? events.findIndex((event) =>
+        eventLines(event).some((line) => matches(line, query)),
+      )
+    : -1;
+  const index = found >= 0 ? found : 0;
+  const event = events[index];
+  if (!event) return null;
+  const line =
+    (found >= 0
+      ? eventLines(event).find((value) => matches(value, query))
+      : eventLines(event)[0]) || '';
+  return (
+    <Link
+      className="reading-row-snippet"
+      href={`${skillHref(skill.id)}${from ? `&from=${encodeURIComponent(from)}` : ''}#${anchorForEvent(events, index)}`}
+    >
+      <span>
+        {sourceById.get(event.sourceId)?.version}
+        {event.scope ? ` · ${event.scope} 공통` : ''}
+        {found >= 0 ? ' · 검색 일치' : ''}
+      </span>
+      <p>{line.replace(/^[·•]\s*/, '')}</p>
+    </Link>
+  );
+}
+
 function SkillRows({
   records,
   showJob = false,
+  from,
+  query = '',
 }: {
   records: ArchiveSkill[];
   showJob?: boolean;
+  from?: string;
+  query?: string;
 }) {
   return (
     <ul className="wiki-skill-rows">
       {records.map((skill) => (
         <li key={skill.id}>
-          <Link className="wiki-skill-row" href={skillHref(skill.id)}>
+          <Link
+            className="wiki-skill-row"
+            href={`${skillHref(skill.id)}${from ? `&from=${encodeURIComponent(from)}` : ''}`}
+          >
             <WikiIcon key={skill.id} skill={skill} />
             <span className="wiki-skill-name">
               <strong>{skill.name}</strong>
@@ -485,6 +588,14 @@ function SkillRows({
             <Status skill={skill} />
             <ChevronRight size={16} />
           </Link>
+          <SkillSnippet skill={skill} query={query} from={from} />
+          <div className="reading-row-actions">
+            <BookmarkButton
+              documentId={`skill:${skill.id}`}
+              label={skill.name}
+            />
+            <CompareButton skill={skill} />
+          </div>
         </li>
       ))}
     </ul>
@@ -572,7 +683,12 @@ function SearchResults({ query, kind }: { query: string; kind: string }) {
           <h3 className="wiki-subtitle">
             스킬 · 변경 항목 <small>명칭·직업·차수·패치 본문에서 검색</small>
           </h3>
-          <SkillRows records={foundSkills.slice(0, limit)} showJob />
+          <SkillRows
+            records={foundSkills.slice(0, limit)}
+            showJob
+            query={query}
+            from={`/wiki/?q=${encodeURIComponent(query)}&kind=${kind}`}
+          />
           {foundSkills.length > limit && (
             <button
               className="wiki-load-more"
@@ -607,6 +723,12 @@ function WikiHome() {
     ? params.get('kind')!
     : 'all';
   const searching = !!q.trim() || kind !== 'all';
+  if (params.get('view') === 'saved')
+    return (
+      <WikiLayout title="내 스킬북" label="저장한 문서" toc={[]}>
+        <ReadingLibrary />
+      </WikiLayout>
+    );
   return (
     <WikiLayout
       title="메이플 패치 위키"
@@ -625,11 +747,7 @@ function WikiHome() {
             ]
       }
     >
-      <p className="wiki-lead">
-        직업에서 스킬로, 스킬에서 변경 이력으로.
-        <br />
-        48개 직업의 패치 기록과 차수 분류, 근거가 있는 분석을 찾아보세요.
-      </p>
+      <ReadingLibrary compact />
       <div className="wiki-update-strip">
         <span>최근 수록</span>
         <Link href={patchHref('p206')}>
@@ -711,12 +829,20 @@ function JobDocument({ id }: { id: string }) {
   const q = params.get('q') || '';
   const requestedTier = params.get('tier') || 'all';
   const selectedTier = tiers.includes(requestedTier) ? requestedTier : 'all';
+  const effect = ['nerf', 'buff', 'mixed', 'review', 'past'].includes(
+    params.get('effect') || '',
+  )
+    ? params.get('effect')!
+    : 'all';
+  const sort = ['history', 'name'].includes(params.get('sort') || '')
+    ? params.get('sort')!
+    : 'source';
   if (!section) return <MissingDocument type="직업" />;
   const records = recordsFor(id);
   const availableTiers = tiers.filter((tier) =>
     records.some((skill) => skill.classification.tier === tier),
   );
-  const visible = searchEntries(
+  const candidates = searchEntries(
     wikiEntries.filter(
       (skill) =>
         skill.sectionId === id &&
@@ -724,6 +850,14 @@ function JobDocument({ id }: { id: string }) {
     ),
     q,
   );
+  const visible = candidates.filter(
+    (skill) =>
+      effect === 'all' || changeSignals(currentEntries(skill)).includes(effect),
+  );
+  if (sort === 'history')
+    visible.sort((a, b) => knownVersions(b) - knownVersions(a));
+  if (sort === 'name')
+    visible.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
   const visibleTiers = availableTiers.filter((tier) =>
     visible.some((skill) => skill.classification.tier === tier),
   );
@@ -742,6 +876,7 @@ function JobDocument({ id }: { id: string }) {
       title={section.name}
       label={section.kind === 'job' ? '직업 문서' : '공통 문서'}
       kind="job"
+      documentId={`job:${id}`}
       sectionId={id}
       toc={toc}
       illustration={
@@ -836,6 +971,54 @@ function JobDocument({ id }: { id: string }) {
             </button>
           ))}
         </div>
+        <div className="reading-effect-filters" aria-label="패치 변화 필터">
+          {[
+            ['all', '전체 변화'],
+            ['nerf', '하향 포함'],
+            ['buff', '상향 포함'],
+            ['mixed', '복합 변경'],
+            ['review', '검토 필요'],
+            ['past', '이전 기록'],
+          ].map(([value, label]) => (
+            <button
+              key={value}
+              aria-pressed={effect === value}
+              className={value}
+              onClick={() => updateQuery({ effect: value })}
+            >
+              {label}
+              <span>
+                {value === 'all'
+                  ? candidates.length
+                  : candidates.filter((skill) =>
+                      changeSignals(currentEntries(skill)).includes(value),
+                    ).length}
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="reading-list-options">
+          <p>현재 검색·차수 기준. 상·하향과 검토 필요는 중복 집계됩니다.</p>
+          <Select
+            value={sort}
+            onValueChange={(value) => updateQuery({ sort: value || 'source' })}
+          >
+            <SelectTrigger aria-label="스킬 정렬">
+              <SelectValue>
+                {sort === 'history'
+                  ? '이력 많은 순'
+                  : sort === 'name'
+                    ? '이름순'
+                    : '원문순'}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="source">원문순</SelectItem>
+              <SelectItem value="history">이력 많은 순</SelectItem>
+              <SelectItem value="name">이름순</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <p className="wiki-small" aria-live="polite">
           {visible.length}개 항목 표시 · 상·하향 표시는 1.2.206 기준
         </p>
@@ -854,13 +1037,19 @@ function JobDocument({ id }: { id: string }) {
               records={visible.filter(
                 (skill) => skill.classification.tier === tier,
               )}
+              query={q}
+              from={`/wiki/job/?${params.toString()}`}
             />
           </section>
         ))}
         {!visible.length && (
           <div className="wiki-empty">
             <p>이 조건에 맞는 항목이 없습니다.</p>
-            <button onClick={() => updateQuery({ q: '', tier: '' })}>
+            <button
+              onClick={() =>
+                updateQuery({ q: '', tier: '', effect: '', sort: '' })
+              }
+            >
               검색·차수 필터 초기화
             </button>
           </div>
@@ -895,77 +1084,13 @@ function JobDocument({ id }: { id: string }) {
 }
 
 function NumericChanges({ skill }: { skill: ArchiveSkill }) {
-  const changes = currentEntries(skill).flatMap((entry) => entry.changes);
-  if (!changes.length)
-    return (
-      <p className="wiki-small">
-        동일 기준으로 정리할 수 있는 전후 수치가 없습니다. 아래 패치 원문의
-        기능·조건 변경을 확인하세요.
-      </p>
-    );
-  return (
-    <>
-      <p className="wiki-small">
-        1.2.206 공지에 명시된 전후 값입니다. 변화율은 해당 수치의 증감이며 직업
-        전체의 최종 피해량 변화가 아닙니다.
-      </p>
-      <div className="wiki-number-table">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>변경 항목</TableHead>
-              <TableHead>변경 전</TableHead>
-              <TableHead>변경 후</TableHead>
-              <TableHead>판정</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {changes.map((change, i) => {
-              const c = change as typeof change & {
-                beforeUnit?: string;
-                afterUnit?: string;
-                beforeContext?: string;
-                afterContext?: string;
-                reason?: string;
-              };
-              return (
-                <TableRow key={i}>
-                  <TableCell>
-                    <strong>{c.metric || '수치 변경'}</strong>
-                    <small>{c.text}</small>
-                    {c.reason && <small>{c.reason}</small>}
-                  </TableCell>
-                  <TableCell>
-                    {c.beforeContext && <small>{c.beforeContext}</small>}
-                    {c.before}
-                    {c.beforeUnit ?? c.unit}
-                  </TableCell>
-                  <TableCell>
-                    {c.afterContext && <small>{c.afterContext}</small>}
-                    {c.after}
-                    {c.afterUnit ?? c.unit}
-                  </TableCell>
-                  <TableCell>
-                    <span className={`wiki-status ${c.direction}`}>
-                      {directionLabels[c.direction] || '검토 필요'}
-                    </span>
-                    <small>
-                      {c.direction === 'review'
-                        ? '단순 비교 보류'
-                        : `${c.relativeChange > 0 ? '+' : ''}${c.relativeChange.toFixed(2)}%`}
-                    </small>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
-    </>
-  );
+  return <ChangeList skill={skill} />;
 }
 
 function SkillDocument({ id }: { id: string }) {
+  const returnTo = safeReturnPath(
+    new URLSearchParams(useLocationSearch()).get('from'),
+  );
   const skill = byArchiveId.get(id);
   if (!skill) return <MissingDocument type="스킬" />;
   const events = eventsFor(skill);
@@ -994,12 +1119,26 @@ function SkillDocument({ id }: { id: string }) {
       title={skill.name}
       label="스킬 · 변경 항목 문서"
       kind="skill"
+      documentId={`skill:${id}`}
       sectionId={skill.sectionId}
       parents={[{ title: skill.job, href: jobHref(skill.sectionId) }]}
       toc={toc}
       illustration={<WikiIcon key={id} skill={skill} />}
     >
       <section id="skill-overview">
+        <div className="reading-skill-actions">
+          {returnTo && (
+            <Link href={returnTo}>
+              목록으로 돌아가기 <ArrowRight size={14} />
+            </Link>
+          )}
+          <CompareButton skill={skill} />
+          {related && (
+            <Link href={comparisonHref([skill.id, related.id])}>
+              원본·VI 나란히 비교 <Swords size={14} />
+            </Link>
+          )}
+        </div>
         <div className="wiki-skill-heading-meta">
           <Link href={jobHref(skill.sectionId)}>{skill.job}</Link>
           <span
@@ -1067,7 +1206,7 @@ function SkillDocument({ id }: { id: string }) {
           {events.map((event, i) => {
             const source = sourceById.get(event.sourceId)!;
             return (
-              <li key={`${event.sourceId}-${i}`}>
+              <li key={`${event.sourceId}-${i}`} id={anchorForEvent(events, i)}>
                 <div className="wiki-timeline-date">
                   <Link href={`${patchHref(source.id)}&job=${skill.sectionId}`}>
                     {source.version}
@@ -1282,7 +1421,9 @@ function PatchDocument({ id }: { id: string }) {
                             )}
                             {eventLines(event)[0]}
                             {eventLines(event).length > 1 && (
-                              <Link href={`${skillHref(skill.id)}#timeline`}>
+                              <Link
+                                href={`${skillHref(skill.id)}#${eventAnchor(source.id, i)}`}
+                              >
                                 기록 {eventLines(event).length}줄 전체 보기
                               </Link>
                             )}
@@ -1319,5 +1460,19 @@ export default function WikiReader({ view = 'wiki' }: { view?: WikiView }) {
   if (view === 'wiki-job') return <JobDocument key={id} id={id} />;
   if (view === 'wiki-skill') return <SkillDocument key={id} id={id} />;
   if (view === 'wiki-patch') return <PatchDocument key={id} id={id} />;
+  if (view === 'wiki-compare')
+    return (
+      <WikiLayout
+        title="스킬 나란히 비교"
+        kind="compare"
+        label="비교 도구"
+        toc={[
+          { id: 'compare-values', label: '조정 수치·해설' },
+          { id: 'compare-history', label: '버전별 기록' },
+        ]}
+      >
+        <ComparisonContent />
+      </WikiLayout>
+    );
   return <WikiHome />;
 }

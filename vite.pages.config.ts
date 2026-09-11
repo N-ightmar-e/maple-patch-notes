@@ -26,6 +26,7 @@ export default defineConfig({
         wiki: `${root}pages/wiki/index.html`,
         wikiJob: `${root}pages/wiki/job/index.html`,
         wikiSkill: `${root}pages/wiki/skill/index.html`,
+        wikiCompare: `${root}pages/wiki/compare/index.html`,
         wikiPatch: `${root}pages/wiki/patch/index.html`,
         compare: `${root}pages/compare/index.html`,
         sources: `${root}pages/sources/index.html`,

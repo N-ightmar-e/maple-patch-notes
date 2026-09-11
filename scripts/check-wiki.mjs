@@ -2,6 +2,13 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { matches, searchEntries } from '../lib/wiki-search.mjs';
 import {
+  parseReadingState,
+  safeReturnPath,
+  anchorForEvent,
+  comparisonHref,
+  changeSignals,
+} from '../lib/reading-state.mjs';
+import {
   jobHref,
   skillHref,
   patchHref,
@@ -95,6 +102,7 @@ const routeViews = {
   'wiki/job': 'wiki-job',
   'wiki/skill': 'wiki-skill',
   'wiki/patch': 'wiki-patch',
+  'wiki/compare': 'wiki-compare',
   history: 'history',
   compare: 'compare',
   sources: 'sources',
@@ -110,5 +118,62 @@ for (const [route, view] of Object.entries(routeViews)) {
   );
 }
 console.log(
-  `Wiki checked: ${names.size} unique skill documents, ${sections.size} parent documents, 9 routes, Korean search and legacy URLs.`,
+  `Wiki checked: ${names.size} unique skill documents, ${sections.size} parent documents, 10 routes, Korean search and legacy URLs.`,
+);
+
+// Restored browser data and shared URLs must remain usable after invalid input.
+assert.deepEqual(parseReadingState('{broken').comparison, []);
+const restored = parseReadingState(
+  JSON.stringify({
+    favorites: ['job:section-03', 'job:section-03', 'https://external.invalid'],
+    comparison: ['archive-abc', 'archive-abc', 'archive-def', 'archive-123'],
+    recent: Array.from({ length: 20 }, (_, i) => `job:section-${i}`),
+  }),
+);
+assert.deepEqual(restored.favorites, ['job:section-03']);
+assert.deepEqual(restored.comparison, ['archive-abc', 'archive-def']);
+assert.equal(restored.recent.length, 12);
+for (const bad of [
+  'https://external.invalid/wiki/',
+  '//external.invalid/wiki/',
+  '/wiki/../../outside',
+  '/notes/',
+  '/wiki/\\external',
+])
+  assert.equal(safeReturnPath(bad), null);
+assert.equal(
+  safeReturnPath('/wiki/job/?id=section-03&tier=6차&effect=nerf'),
+  '/wiki/job/?id=section-03&tier=6%EC%B0%A8&effect=nerf',
+);
+const oldEvents = [
+  { sourceId: 'p205' },
+  { sourceId: 'p205' },
+  { sourceId: 'p204' },
+];
+assert.equal(
+  anchorForEvent(oldEvents, 1),
+  anchorForEvent([{ sourceId: 'p206' }, ...oldEvents], 2),
+);
+assert.deepEqual(
+  changeSignals([
+    {
+      tags: ['review'],
+      changes: [{ direction: 'nerf' }, { direction: 'buff' }],
+    },
+  ]).sort(),
+  ['buff', 'nerf', 'review'],
+);
+assert.deepEqual(changeSignals([]), ['past']);
+assert.equal(
+  comparisonHref(['archive-abc', 'archive-abc', 'archive-def', 'archive-123']),
+  '/wiki/compare/?skills=archive-abc,archive-def',
+);
+assert(
+  searchEntries(searchable, 'ㅎㅇㄹ')
+    .slice(0, 3)
+    .some((entry) => entry.job === '히어로'),
+  'Exact job initials should rank ahead of body-only matches',
+);
+console.log(
+  'Reading state, shared comparison URLs, overlapping change signals and version anchors checked.',
 );

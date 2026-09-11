@@ -30,6 +30,7 @@ for (const route of [
   'wiki/index.html',
   'wiki/job/index.html',
   'wiki/skill/index.html',
+  'wiki/compare/index.html',
   'wiki/patch/index.html',
   'compare/index.html',
   'sources/index.html',
