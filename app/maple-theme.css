@@ -1,0 +1,1557 @@
+/* Maple's skill-window vocabulary, adapted for long-form reading.
+   Original, unmodified Nexon font; copyright notice is distributed alongside it. */
+@font-face {
+  font-family: 'Maplestory';
+  src: url('/assets/fonts/Maplestory%20Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --maple-display:
+    'Maplestory', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --maple-frame: #435866;
+  --maple-steel: #8399a5;
+  --maple-paper: #fffef9;
+  --maple-gold: #ffe58c;
+  --maple-orange: #e8923c;
+  --maple-ink: #354956;
+}
+.wiki-shell {
+  --sidebar: #e7eef2;
+  --wiki-muted: #64767f;
+  --wiki-link: #975016;
+  --wiki-line: #ccd6d9;
+  --wiki-soft: #eff3f3;
+  color: var(--maple-ink);
+  background-color: #d7e6e9;
+  background-image: linear-gradient(
+    135deg,
+    #ffffff1c 25%,
+    transparent 25%,
+    transparent 75%,
+    #ffffff1c 75%
+  );
+  background-size: 12px 12px;
+}
+.wiki-shell :is(a, button):focus-visible {
+  outline: 3px solid #c36d19;
+  outline-offset: 3px;
+}
+.wiki-sidebar {
+  padding: 10px 0 10px 10px !important;
+}
+.wiki-sidebar [data-slot='sidebar-inner'] {
+  border: 3px solid var(--maple-frame);
+  border-radius: 12px !important;
+  box-shadow:
+    inset 0 0 0 2px #b8c8cf,
+    0 4px 0 #8ca3ad;
+  overflow: hidden;
+}
+.wiki-side-head {
+  padding: 24px 16px 19px !important;
+  background: #fff8df;
+  border-bottom: 2px solid #ad9862;
+  box-shadow: inset 0 3px #fff;
+}
+.wiki-brand {
+  font-family: var(--maple-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0;
+  color: #665037 !important;
+  line-height: 1.4;
+  gap: 8px;
+}
+.wiki-brand > svg {
+  width: 33px;
+  height: 33px;
+  padding: 5px;
+  color: #ac5a16;
+  background: #ffe38b;
+  border: 1px solid #cda34d;
+  border-radius: 9px;
+  box-shadow:
+    inset 0 2px #fff2c7,
+    0 2px #dbc177;
+}
+.wiki-brand small {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: #736346;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.wiki-side-content {
+  padding: 12px !important;
+}
+.wiki-main-nav {
+  gap: 6px;
+  border-bottom: 0;
+  padding-bottom: 5px;
+}
+.wiki-main-nav > a {
+  color: #485e6c;
+  border: 1px solid #a9bac3;
+  border-radius: 6px;
+  background: #f8fbfc;
+  box-shadow:
+    inset 0 2px #fff,
+    0 2px #c0d0d8;
+  padding: 9px 10px;
+  min-height: 39px;
+  font-size: 14px;
+}
+.wiki-main-nav > a:first-child {
+  background: #fadd83;
+  border-color: #b99b56;
+  color: #725220;
+  box-shadow:
+    inset 0 2px #fff0b8,
+    0 2px #c4ab72;
+}
+.wiki-main-nav > a:hover {
+  background: #fff0bd;
+  border-color: #c99b39;
+  transform: translateY(-1px);
+}
+.wiki-main-nav > a:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px #d4b66d;
+}
+.wiki-side-search {
+  border: 1px solid #9ab0bd;
+  box-shadow: inset 0 2px 2px #d7e0e6;
+  margin: 20px 0 8px;
+  background: #fff;
+}
+.wiki-side-group {
+  margin: 14px 0 5px;
+  background: #fdfefe;
+  border: 1px solid #b8c9d1;
+  border-radius: 6px;
+  padding: 7px;
+}
+.wiki-side-group h2 {
+  font-family: var(--maple-display);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #516a77;
+  background: #e7eef1;
+  border: 1px solid #cad7dc;
+  border-radius: 4px;
+  padding: 5px 8px;
+  margin: 0 0 7px;
+}
+.wiki-side-group > a {
+  border: 1px solid transparent;
+  min-height: 40px;
+  gap: 8px;
+  padding: 4px 6px;
+  color: #536873;
+  line-height: 1.5;
+  font-size: 14px;
+}
+.wiki-side-group > a img {
+  width: 32px;
+  height: 29px;
+  object-fit: contain;
+}
+.wiki-side-group > a:hover {
+  background: #f7f0d9;
+  border-color: #e6d198;
+}
+.wiki-side-group > a[aria-current='page'] {
+  color: #78501a;
+  background: #ffea9b;
+  border-color: #dab563;
+  box-shadow: inset 0 0 0 1px #fff7cc;
+  font-weight: 700;
+}
+.wiki-side-footer {
+  background: #dbe6ec;
+  border-top: 1px solid #b2c4cf;
+  font-size: 11px;
+  color: #526974;
+  padding: 13px 16px !important;
+}
+.wiki-topbar {
+  margin: 0 0 4px;
+  padding: 14px 28px;
+  min-height: 74px;
+  border: 0;
+  background: #d7e6e9;
+  box-shadow: 0 1px #aec4ce;
+  gap: 12px;
+}
+.maple-top-brand {
+  font-family: var(--maple-display);
+  font-size: 16px;
+  white-space: nowrap;
+  color: #536d78 !important;
+  margin-right: 12px;
+}
+.wiki-global-search {
+  background: #f8fcfc;
+  border: 2px solid #839aa5;
+  border-radius: 7px;
+  box-shadow:
+    inset 0 2px 1px #d1dfe3,
+    0 2px #bed0d7;
+  padding: 0 5px 0 12px;
+  max-width: 590px;
+}
+.wiki-global-search input {
+  height: 35px;
+  font-size: 15px;
+}
+.wiki-global-search button {
+  background: #ffdf75;
+  border: 1px solid #c3a24e;
+  border-radius: 4px;
+  padding: 5px 12px;
+  margin: 3px 0;
+  box-shadow:
+    inset 0 1px #fff8c9,
+    0 1px #cbb573;
+  color: #72521e;
+  font-family: var(--maple-display);
+  font-size: 14px;
+}
+.wiki-top-source {
+  font-size: 13px;
+  color: #54717f !important;
+}
+.wiki-body {
+  max-width: 1450px;
+  grid-template-columns: minmax(0, 1fr) 172px;
+  gap: 21px;
+  padding: 23px 28px 35px;
+}
+.wiki-article {
+  background: var(--maple-paper);
+  border: 3px solid var(--maple-frame);
+  border-radius: 12px;
+  padding: 0 28px 8px;
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    0 5px 0 #9db3bd,
+    0 9px 16px #54717b17;
+  overflow: clip;
+}
+.maple-window-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 43px;
+  margin: 0 -28px;
+  padding: 8px 15px;
+  border-bottom: 2px solid #324753;
+  background: #576f7b;
+  box-shadow:
+    inset 0 2px #91aab6,
+    inset 0 -1px #71909f;
+  color: #fff;
+}
+.maple-window-title > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--maple-display);
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 2px #3d525c;
+}
+.maple-window-title small {
+  font-size: 10px;
+  color: #e0eaee;
+  letter-spacing: 0.3px;
+}
+.maple-book-tabs {
+  display: flex;
+  gap: 6px;
+  align-items: end;
+  margin: 0 -28px 23px;
+  padding: 12px 17px 0;
+  background: #dae5e9;
+  border-bottom: 2px solid #bac7ca;
+}
+.maple-book-tabs > a {
+  position: relative;
+  bottom: -2px;
+  display: block;
+  padding: 9px 21px;
+  border: 1px solid #91a7b2;
+  border-bottom: 2px solid #bac7ca;
+  border-radius: 8px 8px 0 0;
+  background: #eff5f6;
+  box-shadow: inset 0 2px #fff;
+  color: #5f7682;
+  font-family: var(--maple-display);
+  font-size: 15px;
+  white-space: nowrap;
+}
+.maple-book-tabs > a[aria-current='page'] {
+  background: #ffe89d;
+  border-color: #c09b44;
+  border-bottom: 2px solid #ffe89d;
+  color: #775015;
+  box-shadow: inset 0 2px #fff8d9;
+}
+.maple-book-tabs > a:hover {
+  color: #81510e;
+  background: #ffefba;
+}
+.wiki-breadcrumb {
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: #607781;
+  gap: 6px;
+}
+.wiki-breadcrumb a {
+  color: #6e858e;
+}
+.wiki-article-header {
+  min-height: 133px;
+  margin: 0 0 18px;
+  padding: 17px 20px;
+  background: #f3f6f3;
+  border: 1px solid #c0ccd0;
+  border-radius: 9px;
+  box-shadow: inset 0 2px #fff;
+  gap: 15px;
+}
+.wiki-overline {
+  font-family: var(--maple-display);
+  font-size: 14px;
+  color: #566f78;
+  margin-bottom: 9px;
+  font-weight: 700;
+}
+.wiki-article-header h1 {
+  font-family: var(--maple-display);
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: #415963;
+  text-shadow: 0 2px #fff;
+}
+.maple-portrait {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 136px;
+  height: 121px;
+  margin: -7px 0;
+  border: 2px solid #91a9ad;
+  border-radius: 8px;
+  background: #d9e8e6;
+  box-shadow:
+    inset 0 0 0 2px #f4fcf6,
+    0 2px #becac7;
+}
+.maple-portrait.skill {
+  width: 91px;
+  height: 89px;
+  background: #dfe9ee;
+}
+.wiki-job-art {
+  width: 130px;
+  max-height: 119px;
+  height: 116px;
+  object-fit: contain;
+  margin: 0;
+}
+.maple-portrait > .wiki-skill-icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 7px;
+}
+.maple-portrait > .wiki-skill-icon img {
+  width: 44px;
+  height: 44px;
+}
+.wiki-document-tools {
+  border-top: 0;
+  border-bottom: 1px solid #e2e1d6;
+  padding: 0 0 14px;
+  margin: 0 0 19px;
+  gap: 8px;
+}
+.wiki-document-tools > span:first-child {
+  color: #607468;
+  font-size: 11px;
+}
+.wiki-document-tools button,
+.wiki-document-tools a {
+  background: #f2f4ed;
+  border: 1px solid #c4cec4;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px #fff,
+    0 1px #d3d9cf;
+  padding: 5px 8px;
+  color: #64786e;
+  font-size: 12px;
+}
+.wiki-document-tools button:hover,
+.wiki-document-tools a:hover {
+  background: #fff0b6;
+  border-color: #c9b06a;
+}
+.wiki-lead {
+  color: #5a6c72;
+  line-height: 1.9;
+  font-size: 16px;
+  margin-bottom: 17px;
+}
+.wiki-small {
+  color: #607781;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.wiki-note {
+  border: 1px solid #dcc78e;
+  border-left: 4px solid #d4a846;
+  background: #fff7df;
+  border-radius: 4px;
+  color: #87703e;
+  padding: 12px 15px;
+}
+.wiki-section-title {
+  font-family: var(--maple-display);
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #486775;
+  border-color: #b9cbd1;
+  padding-bottom: 11px;
+  margin-top: 33px;
+}
+.wiki-section-title > span {
+  font-family: var(--font-sans);
+  color: #607781;
+  font-size: 12px;
+}
+.wiki-section-title > a {
+  color: #a4b4b6;
+}
+.wiki-subtitle {
+  font-family: var(--maple-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: #607b83;
+}
+.wiki-subtitle small {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+}
+.wiki-toc {
+  background: #edf3f5;
+  top: 100px;
+  max-height: calc(100vh - 123px);
+  border: 2px solid #69828e;
+  border-radius: 9px;
+  padding: 0 11px 15px;
+  box-shadow:
+    inset 0 0 0 1px #fff,
+    0 3px #a5bac2;
+  scrollbar-width: thin;
+}
+.wiki-toc h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--maple-display);
+  font-size: 14px;
+  color: #fff;
+  background: #566f7c;
+  border-bottom: 1px solid #607b86;
+  margin: 0 -11px 10px;
+  padding: 11px;
+  box-shadow: inset 0 1px #a5bbc6;
+}
+.wiki-toc-links a {
+  font-size: 13px;
+  color: #617a85;
+  border-radius: 4px;
+  padding: 5px 4px;
+  line-height: 1.7;
+}
+.wiki-toc-links a:hover {
+  background: #fff0b8;
+  color: #795522;
+}
+.wiki-toc-links a span {
+  color: #647f89;
+}
+.wiki-toc-note {
+  margin-top: 19px;
+  border-color: #c5d2d7;
+  padding: 15px 3px 0;
+  gap: 7px;
+}
+.wiki-toc-note strong {
+  font-family: var(--maple-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: #526b78;
+}
+.wiki-mobile-toc {
+  background: #eef4f5;
+  border: 1px solid #a4bbc5;
+  border-radius: 6px;
+  box-shadow: inset 0 1px #fff;
+}
+.wiki-mobile-toc summary {
+  font-family: var(--maple-display);
+  color: #607984;
+  font-size: 15px;
+}
+.wiki-update-strip {
+  background: #fff1c7;
+  border: 1px solid #d9ba65;
+  border-radius: 6px;
+  box-shadow: inset 0 2px #fff9e9;
+  padding: 12px 14px;
+}
+.wiki-update-strip > span {
+  font-family: var(--maple-display);
+  font-size: 13px;
+  color: #a67a30;
+}
+.wiki-update-strip > a {
+  color: #86551e;
+  font-weight: 700;
+}
+.wiki-update-strip time {
+  color: #806731;
+}
+.wiki-search-label {
+  font-family: var(--maple-display);
+  font-size: 18px;
+  color: #5b7885;
+  line-height: 1.5;
+  font-weight: 700;
+}
+.wiki-search-field {
+  border: 2px solid #94acb7;
+  border-radius: 7px;
+  box-shadow: inset 0 2px 2px #e0e7e9;
+  background: #fff;
+  color: #7a929e;
+}
+.wiki-search-field.compact {
+  border: 1px solid #aebec7;
+  max-width: none;
+  margin-top: 17px;
+}
+.wiki-filter-bar button {
+  font-size: 14px;
+  color: #6a7d82;
+  border: 1px solid #b5c5c8;
+  background: #f5f8f5;
+  box-shadow:
+    inset 0 1px #fff,
+    0 1px #d0d8d5;
+  border-radius: 5px;
+  min-height: 34px;
+  padding: 6px 11px;
+}
+.wiki-filter-bar button:hover {
+  background: #fff4c9;
+  border-color: #d5b976;
+  color: #906a25;
+}
+.wiki-filter-bar button[aria-pressed='true'] {
+  background: #ffe38b;
+  border-color: #c29b43;
+  color: #775118;
+  box-shadow:
+    inset 0 2px #fff3c0,
+    0 1px #cbae61;
+  font-weight: 700;
+}
+.wiki-filter-bar > small {
+  color: #607771;
+  font-size: 12px;
+}
+.wiki-job-directory {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+.wiki-job-directory > a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  padding: 15px 7px 12px;
+  min-height: 160px;
+  background: #f0f5f2;
+  border: 1px solid #b5c8c7;
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    0 3px #d4dcd7;
+  color: #557379;
+}
+.wiki-job-directory > a img {
+  height: 97px;
+  width: 111px;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.14s ease;
+}
+.wiki-job-directory > a > span {
+  flex: none;
+}
+.wiki-job-directory strong {
+  font-family: var(--maple-display);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #4c686f;
+}
+.wiki-job-directory small {
+  font-size: 11px;
+  color: #5c7468;
+  margin-top: 2px;
+}
+.wiki-job-directory > a > svg:last-child {
+  display: none;
+}
+.wiki-job-directory > a:hover {
+  border-color: #d3a748;
+  background: #fff4c5;
+  box-shadow:
+    inset 0 0 0 2px #fffbe9,
+    0 3px #d2ba7a;
+}
+.wiki-job-directory > a:hover img {
+  transform: translateY(-3px);
+}
+.wiki-job-directory > a:hover strong {
+  color: #94601f;
+  text-decoration: none;
+}
+.wiki-job-directory.common {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.wiki-job-directory.common > a {
+  flex-direction: row;
+  text-align: left;
+  justify-content: flex-start;
+  min-height: 65px;
+  padding: 12px 15px;
+  gap: 10px;
+  background: #f6f8f5;
+}
+.wiki-job-directory.common strong {
+  font-size: 14px;
+  color: #728786;
+}
+.wiki-job-directory.common > a > svg:first-child {
+  display: block;
+  color: #9cafaa;
+}
+.wiki-facts {
+  background: #eef3f0;
+  border: 1px solid #c1d0c5;
+  border-radius: 6px;
+  box-shadow: inset 0 1px #fff;
+  margin: 17px 0;
+}
+.wiki-facts > div + div {
+  border-color: #cdd9d0;
+}
+.wiki-facts dt {
+  color: #60745f;
+  font-size: 12px;
+}
+.wiki-facts dd {
+  font-family: var(--maple-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: #5d7861;
+}
+.wiki-inline-links a {
+  font-size: 14px;
+  color: #9a6627;
+}
+.maple-skillbook {
+  background: #eaf0f3;
+  border: 2px solid #9aafb9;
+  border-radius: 8px;
+  padding: 0 16px 18px;
+  margin-top: 26px;
+  box-shadow:
+    inset 0 0 0 2px #f6fafb,
+    0 3px #d0d9dc;
+}
+.maple-skillbook > .wiki-section-title {
+  font-size: 21px;
+  background: #6c8593;
+  color: #fff;
+  margin: 0 -16px 14px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 5px 5px 0 0;
+  text-shadow: 0 1px #46616f;
+  box-shadow: inset 0 2px #9bb1bd;
+}
+.maple-skillbook > .wiki-section-title > a {
+  color: #beced7;
+  text-shadow: none;
+}
+.maple-skillbook > .wiki-small {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #566d77;
+}
+.maple-tier-tabs {
+  gap: 5px;
+  margin: 17px 0 12px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid #b4c5ce;
+  align-items: end;
+}
+.maple-tier-tabs button {
+  font-family: var(--maple-display);
+  font-size: 15px;
+  font-weight: 700;
+  min-width: 43px;
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid #99afba;
+  border-radius: 6px 6px 3px 3px;
+  background: #d9e5eb;
+  color: #688694;
+  box-shadow:
+    inset 0 2px #f8fcff,
+    0 2px #b0c5d0;
+}
+.maple-tier-tabs button[aria-pressed='true'] {
+  background: #ffdf7c;
+  color: #855817;
+  border-color: #bc9743;
+  box-shadow:
+    inset 0 2px #fff8ca,
+    0 3px #c3a253;
+  transform: translateY(-2px);
+}
+.wiki-tier-section {
+  margin-top: 23px;
+}
+.wiki-tier-section > h3 {
+  font-family: var(--maple-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: #587582;
+  margin-bottom: 12px;
+}
+.wiki-tier-section > h3 > span {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: #566d77;
+}
+.wiki-skill-rows {
+  border: 1px solid #bdccd0;
+  border-radius: 7px;
+  background: #fffef9;
+  overflow: hidden;
+}
+.wiki-skill-rows > li {
+  border-color: #dfe5e4;
+}
+.wiki-skill-rows > li:last-child {
+  border-bottom: 0;
+}
+.wiki-skill-row {
+  padding: 13px 12px;
+  gap: 12px;
+  min-height: 77px;
+}
+.wiki-skill-row:hover {
+  background: #fff5cd;
+  box-shadow: inset 3px 0 #e8b649;
+}
+.wiki-skill-icon {
+  width: 45px;
+  height: 45px;
+  background: #e4ecee;
+  border: 2px solid #99aeb8;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 2px #f8fcff,
+    inset 0 -4px #cedce0,
+    0 2px #c3d1d4;
+  color: #8b9fa9;
+}
+.wiki-skill-icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 #fff);
+}
+.wiki-skill-name strong {
+  font-size: 16px;
+  color: #4e6773;
+  font-weight: 650;
+  line-height: 1.6;
+}
+.wiki-skill-name small {
+  font-size: 12px;
+  color: #607781;
+  line-height: 1.6;
+}
+.wiki-skill-row > svg {
+  color: #b2bfbf;
+}
+.maple-skillbook .wiki-skill-rows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 0;
+  border-radius: 0;
+  background: none;
+  gap: 8px;
+  overflow: visible;
+}
+.maple-skillbook .wiki-skill-rows > li {
+  min-width: 0;
+  border: 1px solid #b8cbd3;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 1px #fff,
+    0 2px #ccd9df;
+}
+.maple-skillbook .wiki-skill-row {
+  display: grid;
+  grid-template-columns: 45px minmax(0, 1fr);
+  column-gap: 10px;
+  row-gap: 5px;
+  padding: 13px 10px;
+  min-height: 105px;
+  border-radius: 6px;
+  align-content: center;
+}
+.maple-skillbook .wiki-skill-row > .wiki-skill-icon {
+  grid-row: 1 / 3;
+  align-self: center;
+}
+.maple-skillbook .wiki-skill-row > .wiki-skill-name {
+  grid-column: 2;
+}
+.maple-skillbook .wiki-skill-row > .wiki-status {
+  grid-column: 2;
+  justify-self: start;
+}
+.maple-skillbook .wiki-skill-row > svg {
+  display: none;
+}
+.maple-skillbook .wiki-skill-name strong {
+  font-size: 15px;
+  line-height: 1.6;
+}
+.maple-skillbook .wiki-skill-name small {
+  font-size: 11px;
+  margin-top: 3px;
+}
+.wiki-status {
+  font-size: 11px;
+  border-radius: 3px;
+  border: 1px solid #d4dfdf;
+  padding: 2px 6px;
+  background: #f0f4f4;
+  color: #5f7474;
+}
+.wiki-status.buff {
+  background: #e8f4e6;
+  color: #526e43;
+  border-color: #c4dcb7;
+}
+.wiki-status.nerf {
+  background: #fceee8;
+  color: #915736;
+  border-color: #e7c7b7;
+}
+.wiki-status.review,
+.wiki-status.mixed {
+  background: #fff4d3;
+  color: #7b612b;
+  border-color: #e9d69b;
+}
+.wiki-tier-label {
+  background: #ebf2f4;
+  color: #7a95a2;
+  border-color: #c6d7df;
+}
+.wiki-related-callout {
+  background: #fff4d6;
+  border: 1px solid #dcc17b;
+  border-radius: 6px;
+  box-shadow: inset 0 2px #fffaf0;
+  color: #b08c3d;
+}
+.wiki-related-callout strong {
+  font-family: var(--maple-display);
+  font-size: 18px;
+  color: #9b7134;
+  font-weight: 700;
+}
+.wiki-number-table {
+  border: 1px solid #a6bac3;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: 0 2px #d6e0e3;
+}
+.wiki-number-table th {
+  background: #e4eef3;
+  color: #566f7a;
+  border-bottom: 1px solid #b5c9d2;
+  font-size: 13px;
+}
+.wiki-number-table td {
+  background: #fff;
+  font-size: 14px;
+  color: #597180;
+}
+.wiki-number-table small {
+  color: #607781;
+}
+.wiki-timeline-date {
+  border-top: 3px solid #dfb854;
+  background: #fcf5de;
+  padding: 10px 8px;
+  border-radius: 4px 4px 0 0;
+  align-self: start;
+}
+.wiki-timeline-date a {
+  font-family: var(--maple-display);
+  font-size: 15px;
+  color: #9b742a;
+}
+.wiki-timeline-date time {
+  color: #89713c;
+  font-size: 11px;
+}
+.wiki-timeline-content {
+  border-top: 1px solid #d6dedc;
+}
+.wiki-timeline-content > ul {
+  color: #5b737d;
+  font-size: 16px;
+}
+.wiki-event-label {
+  color: #607781;
+}
+.wiki-evidence {
+  border: 1px solid #c7d5d8;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.wiki-evidence > div {
+  background: #f6f9f7;
+  border-color: #d4dfda;
+}
+.wiki-evidence > div:last-child {
+  border-bottom: 0;
+}
+.wiki-evidence dt {
+  color: #5e756d;
+}
+.wiki-neighbor-nav > a {
+  border: 1px solid #c9d7d3;
+  background: #f6f9f4;
+  border-radius: 6px;
+  padding: 13px 15px;
+}
+.wiki-neighbor-nav strong {
+  color: #6d8679;
+}
+.wiki-patch-list {
+  border: 1px solid #bcced2;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+.wiki-patch-list > a {
+  padding: 16px 13px;
+  color: #5a7681;
+  border-color: #dae4e5;
+}
+.wiki-patch-list > a:last-child {
+  border-bottom: 0;
+}
+.wiki-patch-list > a:hover {
+  background: #fff7db;
+}
+.wiki-patch-list strong {
+  font-family: var(--maple-display);
+  font-size: 17px;
+  font-weight: 700;
+}
+.wiki-patch-list em {
+  background: #ffeba5;
+  color: #947634;
+  border: 1px solid #dfc16e;
+  border-radius: 3px;
+}
+.wiki-patch-list small,
+.wiki-patch-list time {
+  color: #607781;
+}
+.wiki-patch-job > h3 a {
+  font-family: var(--maple-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: #6f8b92;
+  border-color: #c3d4d7;
+}
+.wiki-patch-entry-list > li > div > a {
+  color: #617e87;
+}
+.wiki-job-results a {
+  background: #fff4cf;
+  border-color: #dfc68a;
+  color: #957035;
+  box-shadow: inset 0 1px #fff;
+}
+.wiki-results-summary {
+  color: #738b91;
+  border-color: #cedcda;
+}
+.wiki-load-more,
+.wiki-empty button,
+.wiki-empty > a {
+  border: 1px solid #b3c6c9;
+  background: #f0f6f3;
+  color: #658378;
+  box-shadow:
+    inset 0 1px #fff,
+    0 2px #d4dfd9;
+  border-radius: 5px;
+}
+.wiki-article-footer {
+  border-color: #e0e4d8;
+  color: #5f7464;
+  font-size: 12px;
+  margin-top: 34px;
+  padding-top: 18px;
+  line-height: 1.85;
+}
+.wiki-article-footer a {
+  color: #64773e;
+}
+.wiki-article .job-analysis-highlight {
+  background: #fbf4df;
+  border: 1px solid #ddcba0;
+  border-radius: 6px;
+  box-shadow: inset 0 1px #fff;
+  padding: 14px 16px;
+}
+.wiki-article .job-analysis-highlight > div {
+  color: #8a6b30;
+}
+.wiki-article .job-analysis-highlight > a {
+  color: #91713b;
+}
+.wiki-article .analysis-comment.editorial {
+  background: #fff9e9;
+  border: 1px solid #e6d8b3;
+  border-left: 4px solid #dfb85a;
+  border-radius: 6px;
+}
+.wiki-article .analysis-comment.automatic {
+  background: #f2f6f4;
+  border-color: #c9d8d0;
+}
+.wiki-article .analysis-comment h4 {
+  font-family: var(--maple-display);
+  font-weight: 700;
+  font-size: 19px;
+  color: #947841;
+  line-height: 1.65;
+}
+.wiki-article .analysis-comment p {
+  color: #7a8071;
+  font-size: 15px;
+  line-height: 1.9;
+}
+/* Existing reading and comparison tools share the display face and game window chrome. */
+.job-sidebar .brand,
+.workspace .title-row h1,
+.workspace .result-heading h2,
+.workspace .job-section-title h3,
+.workspace .sources-content h2,
+.workspace .history-detail-title h3 {
+  font-family: var(--maple-display);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.brand small {
+  font-family: var(--font-sans);
+}
+.workspace .view-nav > a.active {
+  color: #97601d;
+  background: #fff1b9;
+  border-radius: 6px 6px 0 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.workspace .skill-card {
+  border: 2px solid #aabec7;
+  box-shadow: 0 3px #d2dde1;
+  border-radius: 9px;
+}
+.workspace .skill-card .skill-icon,
+.workspace .history-icon {
+  border: 2px solid #9db2bd;
+  background: #e5edf0;
+  box-shadow:
+    inset 0 0 0 2px #f8fcff,
+    0 2px #c5d5dd;
+  border-radius: 6px;
+}
+.workspace .tier-options button.active {
+  color: #795a22;
+  background: #ffe69a;
+  border-color: #c5a55b;
+  box-shadow: inset 0 1px #fff6d4;
+}
+.workspace .tier-options button.active small {
+  color: #a08447;
+}
+@media (min-width: 1600px) {
+  .wiki-body {
+    padding: 25px 35px 40px;
+    gap: 24px;
+  }
+  .wiki-topbar {
+    padding-left: 35px;
+  }
+  .wiki-job-directory {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1350px) {
+  .maple-top-brand {
+    display: none;
+  }
+  .wiki-body {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 1060px;
+    padding: 22px 23px 32px;
+  }
+  .wiki-toc {
+    display: none;
+  }
+  .wiki-mobile-toc {
+    display: block;
+    max-width: none;
+  }
+  .wiki-mobile-toc[open] summary {
+    margin-bottom: 8px;
+  }
+  .wiki-mobile-toc .wiki-toc-links {
+    max-height: 260px;
+    overflow: auto;
+  }
+  .wiki-job-directory {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1030px) {
+  .maple-skillbook .wiki-skill-rows {
+    grid-template-columns: 1fr;
+  }
+  .maple-skillbook .wiki-skill-row {
+    grid-template-columns: 45px minmax(0, 1fr) auto;
+    min-height: 79px;
+  }
+  .maple-skillbook .wiki-skill-row > .wiki-skill-icon {
+    grid-row: 1;
+  }
+  .maple-skillbook .wiki-skill-row > .wiki-status {
+    grid-column: 3;
+    align-self: center;
+  }
+  .wiki-article {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .maple-window-title,
+  .maple-book-tabs {
+    margin-left: -22px;
+    margin-right: -22px;
+  }
+  .wiki-job-directory {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .wiki-topbar {
+    padding: 12px 14px;
+    min-height: 64px;
+    margin-bottom: 0;
+    gap: 9px;
+  }
+  .wiki-global-search {
+    border-width: 1px;
+    gap: 7px;
+    padding-left: 9px;
+  }
+  .wiki-global-search input {
+    font-size: 14px;
+    min-width: 0;
+    height: 36px;
+  }
+  .wiki-global-search button {
+    padding: 5px 9px;
+    font-size: 13px;
+  }
+  .wiki-topbar [data-slot='sidebar-trigger'] {
+    background: #ecf3f4;
+    border: 1px solid #a7bdc7;
+    border-radius: 5px;
+    color: #708d9b;
+    flex-shrink: 0;
+  }
+  .wiki-body {
+    padding: 15px 9px 24px;
+    gap: 0;
+    max-width: 900px;
+  }
+  .wiki-article {
+    border-width: 2px;
+    padding: 0 15px 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px #a4b9c2;
+  }
+  .maple-window-title {
+    margin: 0 -15px;
+    padding: 9px 12px;
+    min-height: 39px;
+  }
+  .maple-window-title > span {
+    font-size: 15px;
+  }
+  .maple-window-title small {
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+  .maple-book-tabs {
+    margin: 0 -15px 17px;
+    padding: 10px 11px 0;
+    gap: 5px;
+  }
+  .maple-book-tabs > a {
+    padding: 8px 13px;
+    font-size: 14px;
+    border-radius: 6px 6px 0 0;
+  }
+  .wiki-breadcrumb {
+    font-size: 11px;
+    margin-bottom: 13px;
+  }
+  .wiki-article-header {
+    padding: 15px 12px;
+    min-height: 111px;
+    gap: 11px;
+    margin-bottom: 15px;
+  }
+  .wiki-article-header h1 {
+    font-size: 29px;
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
+  .wiki-overline {
+    font-size: 12px;
+    margin-bottom: 7px;
+  }
+  .maple-portrait {
+    width: 96px;
+    height: 98px;
+    margin: -3px 0;
+  }
+  .wiki-job-art {
+    width: 92px;
+    height: 94px;
+    max-height: 94px;
+  }
+  .maple-portrait.skill {
+    width: 70px;
+    height: 70px;
+  }
+  .maple-portrait > .wiki-skill-icon {
+    width: 49px;
+    height: 49px;
+  }
+  .maple-portrait > .wiki-skill-icon img {
+    width: 34px;
+    height: 34px;
+  }
+  .wiki-document-tools {
+    padding-bottom: 14px;
+    gap: 7px;
+    line-height: 1.5;
+  }
+  .wiki-document-tools > span:first-child {
+    font-size: 11px;
+  }
+  .wiki-document-tools button,
+  .wiki-document-tools a {
+    font-size: 12px;
+    min-height: 31px;
+    padding: 4px 8px;
+  }
+  .wiki-lead {
+    font-size: 16px;
+  }
+  .wiki-section-title {
+    font-size: 21px;
+    margin-top: 30px;
+  }
+  .wiki-job-directory {
+    gap: 9px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .wiki-job-directory > a {
+    min-height: 151px;
+    padding: 12px 6px 10px;
+  }
+  .wiki-job-directory > a img {
+    width: 106px;
+    height: 88px;
+  }
+  .wiki-job-directory strong {
+    font-size: 15px;
+  }
+  .wiki-job-directory.common {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .wiki-job-directory.common > a {
+    min-height: 61px;
+    padding: 10px 13px;
+  }
+  .wiki-job-directory.common small {
+    display: inline;
+    margin-left: 9px;
+  }
+  .wiki-update-strip {
+    gap: 8px;
+    padding: 11px;
+  }
+  .wiki-update-strip > a {
+    font-size: 14px;
+  }
+  .wiki-update-strip time {
+    flex-basis: 100%;
+    font-size: 11px;
+  }
+  .wiki-facts > div {
+    padding: 11px 13px;
+  }
+  .wiki-facts dt {
+    font-size: 12px;
+  }
+  .wiki-facts dd {
+    font-size: 16px;
+  }
+  .maple-skillbook {
+    margin-top: 24px;
+    padding: 0 10px 14px;
+    border-width: 1px;
+  }
+  .maple-skillbook > .wiki-section-title {
+    margin: 0 -10px 12px;
+    padding: 12px;
+    font-size: 19px;
+    line-height: 1.6;
+  }
+  .maple-skillbook > .wiki-small {
+    font-size: 13px;
+    margin: 10px 2px;
+    line-height: 1.8;
+  }
+  .maple-tier-tabs {
+    gap: 5px;
+    margin-top: 13px;
+  }
+  .maple-tier-tabs button {
+    font-size: 14px;
+    min-width: 37px;
+    padding: 6px 9px;
+    min-height: 34px;
+  }
+  .wiki-skill-row {
+    gap: 9px;
+    padding: 12px 9px;
+    min-height: 76px;
+  }
+  .wiki-skill-icon {
+    width: 41px;
+    height: 41px;
+  }
+  .wiki-skill-icon img {
+    width: 30px;
+    height: 30px;
+  }
+  .wiki-skill-name strong {
+    font-size: 15px;
+  }
+  .wiki-skill-name small {
+    font-size: 11px;
+  }
+  .maple-skillbook .wiki-skill-row {
+    grid-template-columns: 41px minmax(0, 1fr);
+    gap: 5px 10px;
+    padding: 12px 9px;
+    min-height: 89px;
+  }
+  .maple-skillbook .wiki-skill-row > .wiki-skill-icon {
+    grid-row: 1 / 3;
+  }
+  .maple-skillbook .wiki-skill-row > .wiki-status {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .wiki-status {
+    font-size: 10px;
+    padding: 2px 5px;
+  }
+  .wiki-timeline-date {
+    padding: 10px;
+    gap: 13px;
+  }
+  .wiki-timeline-date time {
+    font-size: 12px;
+  }
+  .wiki-timeline-content > ul {
+    font-size: 16px;
+  }
+  .wiki-number-table th {
+    font-size: 12px;
+  }
+  .wiki-number-table td {
+    font-size: 14px;
+    padding: 12px 10px;
+  }
+  .wiki-neighbor-nav {
+    gap: 10px;
+  }
+  .wiki-neighbor-nav > a {
+    padding: 11px;
+  }
+  .wiki-neighbor-nav strong {
+    font-size: 14px;
+  }
+  .wiki-patch-list > a {
+    padding: 14px 11px;
+  }
+  .wiki-patch-list strong {
+    font-size: 16px;
+  }
+  .wiki-article-footer {
+    font-size: 11px;
+    line-height: 1.95;
+    margin-top: 30px;
+  }
+}
+@media (max-width: 360px) {
+  .wiki-article {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+  .maple-window-title,
+  .maple-book-tabs {
+    margin-left: -11px;
+    margin-right: -11px;
+  }
+  .wiki-article-header {
+    padding: 12px 9px;
+  }
+  .wiki-article-header h1 {
+    font-size: 25px;
+  }
+  .maple-portrait {
+    width: 78px;
+    height: 86px;
+  }
+  .wiki-job-art {
+    width: 76px;
+    height: 84px;
+  }
+  .maple-book-tabs > a {
+    padding: 8px 10px;
+  }
+  .wiki-skill-row > .wiki-status {
+    max-width: 53px;
+    white-space: normal;
+    text-align: center;
+  }
+  .wiki-filter-bar button {
+    font-size: 13px;
+  }
+  .maple-skillbook .wiki-skill-name strong {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wiki-job-directory > a img {
+    transition: none;
+  }
+  .wiki-main-nav > a:hover,
+  .wiki-job-directory > a:hover img {
+    transform: none;
+  }
+}
+
+.maple-job-analysis {
+  margin: 13px 0 17px;
+  border: 1px solid #ddcba0;
+  border-radius: 5px;
+  background: #fff9e8;
+}
+.maple-job-analysis > summary {
+  cursor: pointer;
+  padding: 11px 13px;
+  font-size: 14px;
+  font-weight: 650;
+  color: #886930;
+}
+.maple-job-analysis .job-analysis-highlight {
+  margin: 0 !important;
+  border: 0;
+  border-top: 1px solid #e7d9b6;
+  border-radius: 0 0 5px 5px;
+  box-shadow: none;
+}
+.wiki-inline-links .maple-skill-jump {
+  background: #ffe79a;
+  border: 1px solid #ceb16a;
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-shadow:
+    inset 0 1px #fff7d5,
+    0 1px #d5c087;
+  color: #7d5a24;
+  font-weight: 700;
+}
+[data-document='job'] .wiki-facts > div {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+[data-document='job'] .wiki-facts dd {
+  margin-top: 4px;
+}

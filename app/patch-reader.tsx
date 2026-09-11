@@ -998,6 +998,30 @@ function Sources() {
           아이콘 출처 목록 <ExternalLink size={14} />
         </a>
       </section>
+      <section>
+        <h2>메이플스토리 서체</h2>
+        <p>
+          제목과 전직 탭에는 넥슨이 제공한 메이플스토리 서체를 사용합니다. 공식
+          배포 파일을 수정하지 않고 적용했으며, 저작권 안내를 함께 제공합니다.
+        </p>
+        <a
+          className="source-link"
+          href="https://maplestory.nexon.com/Media/Font"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <strong>공식 서체 소개와 사용 조건</strong>
+          <ExternalLink size={16} />
+        </a>
+        <a
+          className="text-button"
+          href={sitePath('/assets/fonts/LICENSE.txt')}
+          target="_blank"
+          rel="noreferrer"
+        >
+          서체 저작권 안내 <ExternalLink size={14} />
+        </a>
+      </section>
     </div>
   );
 }

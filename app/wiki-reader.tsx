@@ -42,6 +42,7 @@ import {
   AnalysisComment,
   JobAnalysisHighlight,
   hasAnalysis,
+  hasJobAnalysis,
 } from './analysis-comment';
 import {
   archive,
@@ -130,7 +131,7 @@ function Status({ skill }: { skill: ArchiveSkill }) {
 function SidebarIndex({ sectionId }: { sectionId?: string }) {
   const [query, setQuery] = useState('');
   return (
-    <Sidebar className="wiki-sidebar">
+    <Sidebar className="wiki-sidebar" variant="floating">
       <SidebarHeader className="wiki-side-head">
         <Link href="/" className="wiki-brand">
           <Leaf size={25} />
@@ -253,6 +254,7 @@ function WikiLayout({
   toc,
   children,
   illustration,
+  kind = 'home',
 }: {
   title: string;
   label: string;
@@ -261,8 +263,11 @@ function WikiLayout({
   toc: TocItem[];
   children: ReactNode;
   illustration?: ReactNode;
+  kind?: 'home' | 'job' | 'skill' | 'patch';
 }) {
   const [copyStatus, setCopyStatus] = useState('');
+  const isSkillIndex =
+    new URLSearchParams(useLocationSearch()).get('kind') === 'skills';
   useEffect(() => {
     document.title = `${title} | 메이플 패치 위키`;
   }, [title]);
@@ -277,7 +282,7 @@ function WikiLayout({
   return (
     <SidebarProvider
       className="wiki-shell"
-      style={{ '--sidebar-width': '248px' } as CSSProperties}
+      style={{ '--sidebar-width': '260px' } as CSSProperties}
     >
       <a className="skip-link" href="#wiki-main">
         본문으로 이동
@@ -286,13 +291,57 @@ function WikiLayout({
       <div className="wiki-workspace">
         <header className="wiki-topbar">
           <SidebarTrigger aria-label="위키 메뉴 열기" />
+          <Link href="/wiki/" className="maple-top-brand">
+            메이플 패치 위키
+          </Link>
           <SearchForm />
           <Link className="wiki-top-source" href="/sources/">
             자료 기준
           </Link>
         </header>
         <div className="wiki-body">
-          <main className="wiki-article" id="wiki-main">
+          <main
+            className="wiki-article maple-window"
+            id="wiki-main"
+            data-document={kind}
+          >
+            <div className="maple-window-title">
+              <span>
+                <BookOpen size={17} />
+                {kind === 'job' || kind === 'skill'
+                  ? '스킬북'
+                  : kind === 'patch'
+                    ? '패치 기록'
+                    : '메이플 도감'}
+              </span>
+              <small>TEST WORLD · 1.2.206</small>
+            </div>
+            <nav className="maple-book-tabs" aria-label="도감 바로가기">
+              <Link
+                href="/wiki/#jobs"
+                aria-current={
+                  (kind === 'home' && !isSkillIndex) || kind === 'job'
+                    ? 'page'
+                    : undefined
+                }
+              >
+                직업 도감
+              </Link>
+              <Link
+                href="/wiki/?kind=skills"
+                aria-current={
+                  kind === 'skill' || isSkillIndex ? 'page' : undefined
+                }
+              >
+                스킬 찾기
+              </Link>
+              <Link
+                href={patchHref('p206')}
+                aria-current={kind === 'patch' ? 'page' : undefined}
+              >
+                패치 기록
+              </Link>
+            </nav>
             <nav className="wiki-breadcrumb" aria-label="현재 위치">
               <Link href="/wiki/">대문</Link>
               {parents.map((parent) => (
@@ -309,7 +358,13 @@ function WikiLayout({
                 <p className="wiki-overline">{label}</p>
                 <h1>{title}</h1>
               </div>
-              {illustration}
+              {illustration && (
+                <div
+                  className={`maple-portrait ${kind === 'skill' ? 'skill' : 'job'}`}
+                >
+                  {illustration}
+                </div>
+              )}
             </header>
             <div className="wiki-document-tools">
               <span>자료 확인 {archive.updatedAt}</span>
@@ -344,10 +399,30 @@ function WikiLayout({
                   GitHub
                 </a>
               </p>
+              <p>
+                <a
+                  href="https://maplestory.nexon.com/Media/Font"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  메이플스토리 서체
+                </a>{' '}
+                적용 ·{' '}
+                <a
+                  href={sitePath('/assets/fonts/LICENSE.txt')}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  서체 저작권 안내
+                </a>
+              </p>
             </footer>
           </main>
           <aside className="wiki-toc">
-            <h2>목차</h2>
+            <h2>
+              <BookOpen size={15} />
+              문서 목차
+            </h2>
             <Contents items={toc} />
             <div className="wiki-toc-note">
               <span>수록 범위</span>
@@ -666,6 +741,7 @@ function JobDocument({ id }: { id: string }) {
     <WikiLayout
       title={section.name}
       label={section.kind === 'job' ? '직업 문서' : '공통 문서'}
+      kind="job"
       sectionId={id}
       toc={toc}
       illustration={
@@ -682,8 +758,7 @@ function JobDocument({ id }: { id: string }) {
     >
       <section id="overview">
         <p className="wiki-lead">
-          {section.name}의 수록 항목 {records.length}개를 차수별로 정리한
-          문서입니다. 각 항목에서 패치 원문과 변경 이력을 확인할 수 있습니다.
+          {section.name} · 공식 공지에서 확인한 {records.length}개 항목의 스킬북
         </p>
         <dl className="wiki-facts">
           <div>
@@ -707,6 +782,9 @@ function JobDocument({ id }: { id: string }) {
           </div>
         </dl>
         <div className="wiki-inline-links">
+          <a className="maple-skill-jump" href="#job-skills">
+            스킬 목록 <ArrowRight size={14} />
+          </a>
           <Link href={`/notes/?job=${id}`}>
             최신 패치노트 <ArrowRight size={14} />
           </Link>
@@ -714,9 +792,14 @@ function JobDocument({ id }: { id: string }) {
             이력 비교 도구 <ArrowRight size={14} />
           </Link>
         </div>
-        <JobAnalysisHighlight sectionId={id} wiki />
+        {hasJobAnalysis(id) && (
+          <details className="maple-job-analysis">
+            <summary>이번 패치의 AI 코멘트</summary>
+            <JobAnalysisHighlight sectionId={id} wiki />
+          </details>
+        )}
       </section>
-      <section>
+      <section className="maple-skillbook">
         <SectionTitle id="job-skills">차수별 스킬 · 변경 항목</SectionTitle>
         <p className="wiki-small">
           패치에서 확인한 항목만 수록했습니다. 차수는 이전 공식 가이드 또는 공지
@@ -739,7 +822,10 @@ function JobDocument({ id }: { id: string }) {
             </button>
           )}
         </div>
-        <div className="wiki-filter-bar" aria-label="차수별 필터">
+        <div
+          className="wiki-filter-bar maple-tier-tabs"
+          aria-label="차수별 필터"
+        >
           {['all', ...availableTiers].map((tier) => (
             <button
               key={tier}
@@ -907,6 +993,7 @@ function SkillDocument({ id }: { id: string }) {
     <WikiLayout
       title={skill.name}
       label="스킬 · 변경 항목 문서"
+      kind="skill"
       sectionId={skill.sectionId}
       parents={[{ title: skill.job, href: jobHref(skill.sectionId) }]}
       toc={toc}
@@ -1099,6 +1186,7 @@ function PatchDocument({ id }: { id: string }) {
     <WikiLayout
       title={`테스트월드 ${source.version}`}
       label="패치 버전 문서"
+      kind="patch"
       toc={[
         { id: 'patch-overview', label: '공지 정보' },
         { id: 'patch-jobs', label: '직업별 기록' },

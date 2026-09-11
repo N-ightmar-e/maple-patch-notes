@@ -103,6 +103,8 @@ export const hasAnalysis = (id: string) => {
   const skill = skills.get(id);
   return !!comments[id] || (!!skill && numericNotes(skill).length > 0);
 };
+export const hasJobAnalysis = (sectionId: string) =>
+  Object.values(comments).some((comment) => comment.sectionId === sectionId);
 export function AnalysisComment({ id }: { id: string }) {
   const skill = skills.get(id);
   if (!skill) return null;

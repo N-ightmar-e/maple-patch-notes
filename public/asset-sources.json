@@ -8288,5 +8288,19 @@
     "matchedEntries": 638,
     "totalEntries": 1153,
     "note": "미매칭에는 신규/VI 스킬과 시스템/코어 항목이 포함됩니다."
-  }
+  },
+  "fonts": [
+    {
+      "name": "메이플스토리 Bold",
+      "path": "/assets/fonts/Maplestory Bold.ttf",
+      "url": "https://ssl.nexon.com/s2/Game/Maplestory/Maple2013/image/data/MaplestoryFont_TTF.zip",
+      "sourcePage": "https://maplestory.nexon.com/Media/Font",
+      "licensePath": "/assets/fonts/LICENSE.txt",
+      "originalArchiveEntry": "Maplestory Bold.ttf",
+      "modified": false,
+      "sha256": "d57eaff48a793ff872a0f33bba2943d058d07c81ed64c68054858a287b85811a",
+      "bytes": 1394116,
+      "verifiedAt": "2026-09-11"
+    }
+  ]
 }
